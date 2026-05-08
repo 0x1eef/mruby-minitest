@@ -1,11 +1,11 @@
-# mruby-minitest
+## About
 
 A lightweight [minitest](https://github.com/minitest/minitest)-compatible
 testing framework for mruby. Implements the core minitest API — test
 classes, assertions, spec DSL, and expectations — without the heavy CRuby
 stdlib dependencies.
 
-## About
+## Features
 
 mruby-minitest is an [mrbgem](https://mruby.org/docs/guides/mrbgems.html)
 that ports the essential parts of minitest to mruby. It focuses on what
