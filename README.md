@@ -1,9 +1,8 @@
 ## About
 
-A lightweight [minitest](https://github.com/minitest/minitest)-compatible
-testing framework for mruby. Implements the core minitest API — test
-classes, assertions, spec DSL, and expectations — without the heavy CRuby
-stdlib dependencies.
+A [minitest](https://github.com/minitest/minitest)-compatible
+testing framework for mruby. It covers the core minitest API:
+test classes, assertions, spec DSL, and expectations.
 
 ## Features
 
