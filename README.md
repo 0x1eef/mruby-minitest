@@ -142,6 +142,10 @@ existing parts of minitest that were portable and dropping what
 wasn't. The code itself is minitest, just optimized to include
 only those parts that can work on mruby.
 
+## Additions
+
+* Add `context` as an alias of `describe`
+
 ## License
 
 MIT
