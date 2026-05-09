@@ -6,7 +6,7 @@ test classes, assertions, spec DSL, and expectations.
 
 ## Features
 
-mruby-minitest is an [mrbgem](https://mruby.org/docs/guides/mrbgems.html)
+mruby-minitest is an [mrbgem](https://github.com/mruby/mruby/blob/master/doc/guides/mrbgems.md)
 that ports the essential parts of minitest to mruby. It focuses on what
 people actually use day-to-day:
 
