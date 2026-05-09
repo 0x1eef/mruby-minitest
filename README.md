@@ -60,7 +60,7 @@ Minitest.run(ARGV)
 Add to your mruby build config:
 
 ```ruby
-MRuby::Build.new do |conf|
+MRuby::Build.new("mruby-minitest") do |conf|
   conf.toolchain
   conf.gembox "default"
   conf.gem github: "0x1eef/mruby-minitest"

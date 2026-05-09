@@ -17,7 +17,7 @@ describe "Array" do
   end
 end
 
-describe "Expectations" do
+describe "expectations" do
   it "supports equality and nil checks" do
     _(3).must_equal 3
     _(3).wont_equal 4
@@ -33,7 +33,6 @@ describe "Expectations" do
   it "supports type and identity checks" do
     value = "token"
     alias_value = value
-
     _(value).must_be_instance_of String
     _(value).must_be_kind_of Object
     _(value).must_be_same_as alias_value
