@@ -550,8 +550,6 @@ module Minitest
         return e
       rescue Minitest::Assertion
         raise
-      rescue SystemExit
-        raise
       rescue Exception => e
         flunk(proc { exception_details(e, "#{msg}#{mu_pp(exp)} exception expected, not") })
       end
