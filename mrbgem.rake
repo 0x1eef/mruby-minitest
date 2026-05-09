@@ -6,9 +6,6 @@ MRuby::Gem::Specification.new("mruby-minitest") do |spec|
 
   spec.rbfiles = Dir[File.expand_path("mrblib/**/*.rb", __dir__)]
 
-  # at_exit support (autorun). Core gem, already in default gembox.
-  spec.add_dependency "mruby-toplevel-ext", :core
-
   # capture_io / assert_output / assert_silent support.
   # Available from: https://github.com/ksss/mruby-stringio
   spec.add_dependency "mruby-stringio", :github => "ksss/mruby-stringio"
