@@ -24,7 +24,6 @@ that ports the essential parts of minitest to mruby:
 
 ```ruby
 # test/calculator_test.rb
-require "minitest"
 
 class TestCalculator < Minitest::Test
   def setup
@@ -42,7 +41,6 @@ Minitest.run(ARGV)
 Or spec-style:
 
 ```ruby
-require "minitest"
 
 describe "Array" do
   it "includes elements" do
@@ -65,10 +63,9 @@ Add to your mruby build config:
 MRuby::Build.new do |conf|
   conf.toolchain
   conf.gembox "default"
-
   conf.gem "/path/to/mruby-minitest"
-
   conf.enable_test
+  conf.enable_debug
 end
 ```
 
