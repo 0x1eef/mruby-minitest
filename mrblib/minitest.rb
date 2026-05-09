@@ -23,13 +23,6 @@ module Minitest
 
   self.info_signal = "INFO"
 
-  ##
-  # No-op. mruby does not have at_exit. Call Minitest.run(ARGV) at the
-  # bottom of your test file to run tests.
-  def self.autorun
-    # mruby has no at_exit; use Minitest.run(ARGV) explicitly
-  end
-
   def self.after_run(&block)
     @@after_run << block
   end
@@ -973,8 +966,3 @@ module Minitest
     include Minitest::Expectations
   end
 end
-
-##
-# Auto-run is not available in mruby (no at_exit).
-# Call Minitest.run(ARGV) at the bottom of your test file.
-Minitest.autorun
