@@ -101,7 +101,6 @@ dependency is `mruby-stringio` (for `capture_io` / `assert_output`).
 | Expectations (must_* / wont_*) | ✅ |
 | Minitest.autorun | ✅ |
 | SEED / --seed / --verbose / --name | ✅ |
-| Guard module (jruby?, mri?, osx?, windows?) | ✅ |
 
 ### Not Included
 
