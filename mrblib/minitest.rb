@@ -9,7 +9,6 @@ module Minitest
   VERSION = "5.26.0.mruby1"
 
   @@after_run = []
-  @@installed_at_exit = false
   @extensions = []
 
   def self.cattr_accessor(name)
@@ -25,23 +24,10 @@ module Minitest
   self.info_signal = "INFO"
 
   ##
-  # Registers Minitest to run at process exit using at_exit.
-  # Falls back gracefully if at_exit is not available
-  # (mruby provides it via mruby-toplevel-ext in the default gembox).
-  #
-  # You can also call Minitest.run(ARGV) explicitly at the bottom
-  # of your test file.
+  # No-op. mruby does not have at_exit. Call Minitest.run(ARGV) at the
+  # bottom of your test file to run tests.
   def self.autorun
-    return if @@installed_at_exit
-    if respond_to?(:at_exit) || Kernel.respond_to?(:at_exit)
-      at_exit {
-        next if $! and not ($!.kind_of? SystemExit and $!.success?)
-        exit_code = Minitest.run(ARGV)
-        @@after_run.reverse_each(&:call)
-        exit exit_code || false
-      }
-      @@installed_at_exit = true
-    end
+    # mruby has no at_exit; use Minitest.run(ARGV) explicitly
   end
 
   def self.after_run(&block)
@@ -989,5 +975,6 @@ module Minitest
 end
 
 ##
-# Auto-run (works when mruby-toplevel-ext provides at_exit)
+# Auto-run is not available in mruby (no at_exit).
+# Call Minitest.run(ARGV) at the bottom of your test file.
 Minitest.autorun
