@@ -54,13 +54,97 @@ class TestAssertions < Minitest::Test
     refute_in_delta 3.0, 3.1415, 0.01
   end
 
+  def test_supports_numeric_epsilon_checks
+    assert_in_epsilon 100.0, 100.5, 0.01
+    refute_in_epsilon 100.0, 103.0, 0.01
+  end
+
   def test_supports_empty_checks
     assert_empty ""
     refute_empty "content"
   end
 
+  def test_supports_operator_checks
+    assert_operator 5, :>, 3
+    refute_operator 3, :>, 5
+  end
+
   def test_supports_raised_exception_checks
     assert_raises(ArgumentError) { raise ArgumentError, "boom" }
+  end
+
+  def test_supports_throw_checks
+    value = assert_throws(:done) { throw :done, 42 }
+    assert_equal 42, value
+  end
+
+  def test_supports_output_capture
+    assert_output("hello\n", "warn\n") do
+      puts "hello"
+      $stderr.puts "warn"
+    end
+  end
+
+  def test_supports_silent_blocks
+    assert_silent do
+      value = 1 + 1
+      assert_equal 2, value
+    end
+  end
+
+  def test_supports_capture_io
+    out, err = capture_io do
+      print "alpha"
+      $stderr.print "beta"
+    end
+
+    assert_equal "alpha", out
+    assert_equal "beta", err
+  end
+
+  def test_supports_path_checks
+    assert_path_exists "README.md"
+    refute_path_exists "test/does_not_exist.txt"
+  end
+end
+
+class TestLifecycleHooks < Minitest::Test
+  def before_setup
+    @events = []
+    @events << :before_setup
+  end
+
+  def setup
+    @events << :setup
+  end
+
+  def after_setup
+    @events << :after_setup
+  end
+
+  def before_teardown
+    @events << :before_teardown
+  end
+
+  def teardown
+    @events << :teardown
+  end
+
+  def after_teardown
+    @events << :after_teardown
+    assert_equal [
+      :before_setup,
+      :setup,
+      :after_setup,
+      :test,
+      :before_teardown,
+      :teardown,
+      :after_teardown
+    ], @events
+  end
+
+  def test_runs_hooks_in_order
+    @events << :test
   end
 end
 

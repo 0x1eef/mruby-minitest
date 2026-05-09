@@ -49,13 +49,68 @@ describe "expectations" do
     _(3.1415).wont_be_within_delta 3.0, 0.01
   end
 
+  it "supports numeric epsilon checks" do
+    assert_in_epsilon 100.0, 100.5, 0.01
+    refute_in_epsilon 100.0, 103.0, 0.01
+  end
+
   it "supports empty checks" do
     _("").must_be_empty
     _("content").wont_be_empty
   end
 
+  it "supports operator checks" do
+    assert_operator 5, :>, 3
+    refute_operator 3, :>, 5
+  end
+
   it "supports raised exception checks" do
     _(proc { raise ArgumentError, "boom" }).must_raise ArgumentError
+  end
+
+  it "supports throw checks" do
+    value = assert_throws(:done) { throw :done, 42 }
+    _(value).must_equal 42
+  end
+
+  it "supports output capture" do
+    _(proc {
+      puts "hello"
+      $stderr.puts "warn"
+    }).must_output "hello\n", "warn\n"
+  end
+
+  it "supports silent blocks" do
+    _(proc {
+      value = 1 + 1
+      _(value).must_equal 2
+    }).must_be_silent
+  end
+
+  it "supports path checks" do
+    assert_path_exists "README.md"
+    refute_path_exists "test/does_not_exist.txt"
+  end
+end
+
+describe "spec DSL" do
+  before do
+    @events = []
+  end
+
+  let(:value) { "memoized" }
+  subject { "mruby-minitest" }
+
+  it "supports before, let, and subject" do
+    @events << :test
+    _(value).must_equal "memoized"
+    _(value).must_be_same_as value
+    _(subject).must_match "mini"
+  end
+
+  after do
+    @events << :after
+    assert_equal [:test, :after], @events
   end
 end
 
