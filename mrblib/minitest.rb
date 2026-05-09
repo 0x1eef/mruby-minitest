@@ -319,27 +319,6 @@ module Minitest
   end
 
   ##
-  # Guard module
-
-  module Guard
-    def jruby?(platform = RUBY_PLATFORM)
-      "java" == platform
-    end
-
-    def mri?(platform = RUBY_DESCRIPTION)
-      platform ? platform.start_with?("ruby") : false
-    end
-
-    def osx?(platform = RUBY_PLATFORM)
-      platform ? platform.include?("darwin") : false
-    end
-
-    def windows?(platform = RUBY_PLATFORM)
-      platform ? (/mswin|mingw/ =~ platform) : false
-    end
-  end
-
-  ##
   # BacktraceFilter
 
   class BacktraceFilter
@@ -799,8 +778,6 @@ module Minitest
   class Test < Runnable
     include Minitest::Reportable
     include Minitest::Assertions
-    include Minitest::Guard
-    extend Minitest::Guard
 
     PASSTHROUGH_EXCEPTIONS = [NoMemoryError, SignalException, SystemExit]
     SETUP_METHODS = %w[before_setup setup after_setup]
