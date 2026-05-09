@@ -893,6 +893,13 @@ end
 
 class Minitest::Spec < Minitest::Test
   module DSL
+    def describe(desc, &block)
+      cls = create(desc)
+      cls.class_eval(&block)
+      cls
+    end
+    alias context describe
+
     def it(desc = "anonymous", &block)
       block ||= proc { skip("(no tests defined)") }
       @specs ||= 0

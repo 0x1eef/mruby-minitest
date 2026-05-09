@@ -63,7 +63,7 @@ Add to your mruby build config:
 MRuby::Build.new("mruby-minitest") do |conf|
   conf.toolchain
   conf.gembox "default"
-  conf.gem github: "0x1eef/mruby-minitest"
+  conf.gem github: "0x1eef/mruby-minitest", branch: "main"
   conf.enable_debug
 end
 ```
@@ -144,7 +144,8 @@ only those parts that can work on mruby.
 
 ## Additions
 
-* Add `context` as an alias of `describe`
+* toplevel: add `context` as an alias of `describe`
+* DSL: add `DSL#{describe,context}`
 
 ## License
 
