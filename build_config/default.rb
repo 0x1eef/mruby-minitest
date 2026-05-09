@@ -1,4 +1,4 @@
-MRuby::Build.new do |conf|
+MRuby::Build.new("mruby-minitest") do |conf|
   conf.toolchain
   conf.gembox "default"
   conf.gem "."
