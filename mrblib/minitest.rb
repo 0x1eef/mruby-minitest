@@ -539,7 +539,7 @@ module Minitest
         return e
       rescue Minitest::Assertion
         raise
-      rescue SignalException, SystemExit
+      rescue SystemExit
         raise
       rescue Exception => e
         flunk(proc { exception_details(e, "#{msg}#{mu_pp(exp)} exception expected, not") })
@@ -769,7 +769,7 @@ module Minitest
     include Minitest::Reportable
     include Minitest::Assertions
 
-    PASSTHROUGH_EXCEPTIONS = [NoMemoryError, SignalException, SystemExit]
+    PASSTHROUGH_EXCEPTIONS = [NoMemoryError]
     SETUP_METHODS = %w[before_setup setup after_setup]
     TEARDOWN_METHODS = %w[before_teardown teardown after_teardown]
 
