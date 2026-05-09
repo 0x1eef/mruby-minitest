@@ -118,6 +118,30 @@ dependency is `mruby-stringio` (for `capture_io` / `assert_output`).
 | Benchmark | Separate gem (mruby-benchmark exists) |
 | Pride output | Pure cosmetic, could add easily |
 
+## How did mruby-minitest come to be?
+
+**Motivation**
+
+I wanted a familiar test framework to write tests for
+[mruby-llm](https://github.com/llmrb/mruby-llm) and minitest
+appeared to be a good candidate. The tests for [llm.rb](https://github.com/llmrb/llm.rb)
+are written in RSpec, and porting those tests to mruby-minitest
+is more or less straight forward.
+
+**Workflow**
+
+I used [relay.app](https://github.com/llmrb/relay.app) and
+DeepSeek v4 to analyze both the minitest and mruby repositories
+over a local Forgejo MCP server. The analysis determined what
+could and couldn't be ported to mruby, and afterwards it created
+a repository that implemented the port. It wasn't perfect but
+served as a good foundation.
+
+No new code was generated per se, it was more like copying the
+existing parts of minitest that were portable and dropping what
+wasn't. The code itself is minitest, just optimized to include
+only those parts that can work on mruby.
+
 ## License
 
 MIT
