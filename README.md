@@ -105,14 +105,14 @@ dependency is `mruby-stringio` (for `capture_io` / `assert_output`).
 | before / after hooks | ✅ |
 | let / subject | ✅ |
 | Expectations (must_* / wont_*) | ✅ |
-| Minitest.run(ARGV) / Minitest.autorun | ✅ |
+| Minitest.run(ARGV) | ✅ |
 | SEED / --seed / --verbose / --name | ✅ |
 
 ### Not Included
 
 | Feature | Reason |
 |---------|--------|
-| Auto-run via at_exit | mruby does not have at_exit; use Minitest.run(ARGV) |
+| Auto-run (at_exit) | mruby does not have at_exit; call Minitest.run(ARGV) |
 | Parallel execution | No Thread in mruby |
 | Diff output | Needs Tempfile + external diff |
 | Plugin auto-discovery | No Rubygems |
