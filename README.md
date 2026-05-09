@@ -63,8 +63,7 @@ Add to your mruby build config:
 MRuby::Build.new do |conf|
   conf.toolchain
   conf.gembox "default"
-  conf.gem "/path/to/mruby-minitest"
-  conf.enable_test
+  conf.gem github: "0x1eef/mruby-minitest"
   conf.enable_debug
 end
 ```
