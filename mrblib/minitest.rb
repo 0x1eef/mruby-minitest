@@ -888,6 +888,7 @@ module Kernel
 
   alias value _
   alias expect _
+  alias context describe
 end
 
 class Minitest::Spec < Minitest::Test
