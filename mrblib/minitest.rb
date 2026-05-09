@@ -37,15 +37,12 @@ module Minitest
     reporter << ProgressReporter.new(options[:io], options) unless options[:quiet]
 
     self.reporter = reporter
-    init_plugins(options)
     self.reporter = nil
 
     reporter.start
     begin
       run_all_suites(reporter, options)
       finished = true
-    rescue Interrupt
-      warn "Interrupted. Exiting..."
     end
 
     reporter.report
@@ -176,7 +173,7 @@ module Minitest
     end
 
     def self.methods_matching(re)
-      public_instance_methods(true).grep(re).map(&:to_s)
+      public_instance_methods(true).map(&:to_s).grep(re)
     end
 
     def self.runnable_methods
@@ -283,9 +280,9 @@ module Minitest
   ##
   # Result
 
-  class Result < Runnable
+  class Result
     include Minitest::Reportable
-    attr_accessor :klass, :source_location
+    attr_accessor :assertions, :failures, :klass, :source_location, :time
 
     def self.from(runnable)
       o = runnable
@@ -300,6 +297,20 @@ module Minitest
 
     def class_name
       self.klass
+    end
+
+    def name
+      @NAME
+    end
+
+    def name=(o)
+      @NAME = o
+    end
+
+    def initialize(name)
+      self.name = name
+      self.failures = []
+      self.assertions = 0
     end
 
     def to_s
