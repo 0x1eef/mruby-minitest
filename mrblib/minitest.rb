@@ -112,7 +112,7 @@ module Minitest
     def location
       bt = Minitest.filter_backtrace(backtrace)
       idx = bt.rindex { |s| s =~ /:in [`'](?:assert|refute|flunk|pass|fail|raise|must|wont)/ }
-      loc = bt[idx ? idx + 1 : -1] || "unknown:-1"
+      loc = (idx && bt[idx + 1]) || bt.first || "unknown:-1"
       loc.sub(/:in .*$/, "")
     end
   end
@@ -192,7 +192,7 @@ module Minitest
 
     def self.run(klass, method_name, reporter)
       reporter.prerecord(klass, method_name)
-      reporter.record(klass.new(method_name).run)
+      reporter.record(Result.from(klass.new(method_name).run))
     end
 
     def self.filter_runnable_methods(options = {})
@@ -311,6 +311,10 @@ module Minitest
       self.name = name
       self.failures = []
       self.assertions = 0
+    end
+
+    def failure
+      self.failures.first
     end
 
     def to_s
@@ -446,7 +450,7 @@ module Minitest
       filtered = results.dup
       filtered.reject!(&:skipped?) unless options[:verbose] || options[:show_skips]
       filtered.each_with_index do |result, i|
-        io.puts("\n%3d) %s" % [i + 1, result])
+        io.puts("\n%3d) %s" % [i + 1, result.to_s])
       end
       io.puts
     end
@@ -927,7 +931,7 @@ class Minitest::Spec < Minitest::Test
     end
 
     def name
-      defined?(@name) ? @name : super
+      instance_variable_defined?(:@name) ? @name : super
     end
 
     alias to_s name
@@ -946,24 +950,24 @@ module Minitest
   module Expectations
     infect_an_assertion :assert_equal,        :must_equal
     infect_an_assertion :refute_equal,        :wont_equal
-    infect_an_assertion :assert_nil,          :must_be_nil
-    infect_an_assertion :refute_nil,          :wont_be_nil
+    infect_an_assertion :assert_nil,          :must_be_nil, true
+    infect_an_assertion :refute_nil,          :wont_be_nil, true
     infect_an_assertion :assert_in_delta,     :must_be_within_delta
     infect_an_assertion :refute_in_delta,     :wont_be_within_delta
     infect_an_assertion :assert_match,        :must_match
     infect_an_assertion :refute_match,        :wont_match
-    infect_an_assertion :assert_includes,     :must_include
-    infect_an_assertion :refute_includes,     :wont_include
+    infect_an_assertion :assert_includes,     :must_include, true
+    infect_an_assertion :refute_includes,     :wont_include, true
     infect_an_assertion :assert_instance_of,  :must_be_instance_of
     infect_an_assertion :refute_instance_of,  :wont_be_instance_of
     infect_an_assertion :assert_kind_of,      :must_be_kind_of
     infect_an_assertion :refute_kind_of,      :wont_be_kind_of
-    infect_an_assertion :assert_respond_to,   :must_respond_to
-    infect_an_assertion :refute_respond_to,   :wont_respond_to
+    infect_an_assertion :assert_respond_to,   :must_respond_to, true
+    infect_an_assertion :refute_respond_to,   :wont_respond_to, true
     infect_an_assertion :assert_same,         :must_be_same_as
     infect_an_assertion :refute_same,         :wont_be_same_as
-    infect_an_assertion :assert_empty,        :must_be_empty
-    infect_an_assertion :refute_empty,        :wont_be_empty
+    infect_an_assertion :assert_empty,        :must_be_empty, true
+    infect_an_assertion :refute_empty,        :wont_be_empty, true
     infect_an_assertion :assert_predicate,    :must_be,      true
     infect_an_assertion :refute_predicate,    :wont_be,      true
     infect_an_assertion :assert_raises,       :must_raise,   :block
