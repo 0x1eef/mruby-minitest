@@ -6,7 +6,7 @@
 # MIT license.
 
 module Minitest
-  VERSION = "5.26.0.mruby1"
+  VERSION = "0.1.0"
 
   @@after_run = []
   @extensions = []
