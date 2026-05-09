@@ -9,7 +9,6 @@ module Minitest
   VERSION = "5.26.0.mruby1"
 
   @@after_run = []
-  @@installed_at_exit = false
   @extensions = []
 
   def self.cattr_accessor(name)
@@ -24,14 +23,11 @@ module Minitest
 
   self.info_signal = "INFO"
 
+  ##
+  # No-op in mruby. Call Minitest.run(ARGV) explicitly at the bottom
+  # of your test file instead.
   def self.autorun
-    at_exit {
-      next if $! and not ($!.kind_of? SystemExit and $!.success?)
-      exit_code = Minitest.run(ARGV)
-      @@after_run.reverse_each(&:call)
-      exit exit_code || false
-    } unless @@installed_at_exit
-    @@installed_at_exit = true
+    # mruby does not have at_exit; use Minitest.run(ARGV) explicitly
   end
 
   def self.after_run(&block)
@@ -60,6 +56,7 @@ module Minitest
     end
 
     reporter.report
+    @@after_run.reverse_each(&:call)
     return true if finished && reporter.reporters.grep(SummaryReporter).first.count == 0
     finished && reporter.passed?
   end
@@ -976,7 +973,3 @@ module Minitest
     include Minitest::Expectations
   end
 end
-
-##
-# Auto-run
-Minitest.autorun
