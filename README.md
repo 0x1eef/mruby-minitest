@@ -7,8 +7,7 @@ test classes, assertions, spec DSL, and expectations.
 ## Features
 
 mruby-minitest is an [mrbgem](https://github.com/mruby/mruby/blob/master/doc/guides/mrbgems.md)
-that ports the essential parts of minitest to mruby. It focuses on what
-people actually use day-to-day:
+that ports the essential parts of minitest to mruby:
 
 - **Minitest::Test** with setup/teardown lifecycle
 - **Assertions**: assert_equal, assert_raises, assert_nil, assert_match,
@@ -17,7 +16,8 @@ people actually use day-to-day:
 - **Spec DSL**: describe/it blocks, before/after hooks, let/subject
 - **Expectations**: must_equal, must_include, must_raise, must_match,
   wont_equal, wont_include, etc.
-- **Auto-run** via `at_exit`
+- **Explicit runner**: call `Minitest.run(ARGV)` at the bottom of your
+  test file (mruby does not have `at_exit`, so no autorun)
 - **Reporters**: dot-based progress and summary output
 
 ## Example
@@ -35,11 +35,15 @@ class TestCalculator < Minitest::Test
     assert_equal 3, @calc + 2
   end
 end
+
+Minitest.run(ARGV)
 ```
 
 Or spec-style:
 
 ```ruby
+require "minitest"
+
 describe "Array" do
   it "includes elements" do
     _([1, 2, 3]).must_include 2
@@ -49,6 +53,8 @@ describe "Array" do
     _([]).must_be :empty?
   end
 end
+
+Minitest.run(ARGV)
 ```
 
 ## Integration
@@ -99,13 +105,14 @@ dependency is `mruby-stringio` (for `capture_io` / `assert_output`).
 | before / after hooks | ✅ |
 | let / subject | ✅ |
 | Expectations (must_* / wont_*) | ✅ |
-| Minitest.autorun | ✅ |
+| Minitest.run(ARGV) / Minitest.autorun | ✅ |
 | SEED / --seed / --verbose / --name | ✅ |
 
 ### Not Included
 
 | Feature | Reason |
 |---------|--------|
+| Auto-run via at_exit | mruby does not have at_exit; use Minitest.run(ARGV) |
 | Parallel execution | No Thread in mruby |
 | Diff output | Needs Tempfile + external diff |
 | Plugin auto-discovery | No Rubygems |
