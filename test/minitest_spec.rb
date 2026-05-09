@@ -114,4 +114,4 @@ describe "spec DSL" do
   end
 end
 
-Minitest.run(ARGV)
+Minitest.run(ARGV) || exit(1)
