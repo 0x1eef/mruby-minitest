@@ -35,7 +35,7 @@ class TestCalculator < Minitest::Test
   end
 end
 
-Minitest.run(ARGV)
+Minitest.run(ARGV) || exit(1)
 ```
 
 Or spec-style:
@@ -52,7 +52,7 @@ describe "Array" do
   end
 end
 
-Minitest.run(ARGV)
+Minitest.run(ARGV) || exit(1)
 ```
 
 ## Integration
